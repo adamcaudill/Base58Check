@@ -121,7 +121,7 @@ namespace Base58Check
       var givenCheckSum = ArrayHelpers.SubArray(data, data.Length - CHECK_SUM_SIZE);
       var correctCheckSum = _GetCheckSum(result);
 
-      return givenCheckSum.SequenceEqual(correctCheckSum) ? result : null;
+      return ConstantTimeCompare(givenCheckSum, correctCheckSum) ? result : null;
     }
 
     private static byte[] _GetCheckSum(byte[] data)
@@ -134,6 +134,14 @@ namespace Base58Check
       Buffer.BlockCopy(hash2, 0, result, 0, result.Length);
 
       return result;
+    }
+    
+    private static bool ConstantTimeCompare(byte[] a, byte[] b)
+    {
+        uint diff = (uint)a.Length ^ (uint)b.Length;
+        for (int i = 0; i < a.Length && i < b.Length; i++)
+            diff |= (uint)(a[i] ^ b[i]);
+        return diff == 0;
     }
   }
 }
