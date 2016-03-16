@@ -42,7 +42,7 @@ namespace Base58Check
       {
         var remainder = (int)(intData % 58);
         intData /= 58;
-        result = DIGITS[remainder] + result;
+        result = IntToBase58Char(remainder) + result;
       }
 
       // Append `1` for each leading 0 byte
@@ -134,6 +134,37 @@ namespace Base58Check
       Buffer.BlockCopy(hash2, 0, result, 0, result.Length);
 
       return result;
+    }
+    
+    // Should be constant time
+    private static char IntToBase58Char(int value)
+    {
+      value += 0x31;
+      
+      // Start with 1 through 9...
+      
+      // if (value > 0x39) value += 0x41 - 0x31; // 16
+      value += ((0x39 - value) >> 8) & 16;
+      
+      // Skip I (0x48)
+      
+      // if (value > 0x48) value += 0x49 - 0x48; // 1
+      value += ((0x48 - value) >> 8) & 1;
+      
+      // Skip O (0x4f)
+      
+      // if (value > 0x4f) value += 0x50 - 0x4f; // 1
+      value += ((0x4f - value) >> 8) & 1;
+      
+      // if (value > 0x5a) value += 0x61 - 0x5b; // 6
+      value += ((0x5a - value) >> 8) & 6;
+      
+      // Skip l (0x6c)
+      
+      // if (value > 0x4f) value += 0x6d - 0x6c; // 1
+      value += ((0x6c - value) >> 8) & 1;
+      
+      return (char)value;
     }
   }
 }
