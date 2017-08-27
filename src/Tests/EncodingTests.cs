@@ -53,10 +53,9 @@ namespace Tests
     }
 
     [Test]
-    [ExpectedException(typeof(FormatException))]
     public void DecodeInvalidChar()
     {
-      Base58CheckEncoding.DecodePlain("ab0");
+       Assert.Throws<FormatException>(() =>Base58CheckEncoding.DecodePlain("ab0"));
     }
 
     [Test]
@@ -74,11 +73,9 @@ namespace Tests
     }
 
     [Test]
-    [ExpectedException(typeof(FormatException))]
     public void DecodeBrokenBitcoinAddress()
     {
-      var actualBytes = Base58CheckEncoding.Decode(BROKEN_ADDRESS_TEXT);
-      Assert.AreEqual(BitConverter.ToString(AddressBytes), BitConverter.ToString(actualBytes));
+      Assert.Throws<FormatException>(() => Base58CheckEncoding.Decode(BROKEN_ADDRESS_TEXT));
     }
   }
 }

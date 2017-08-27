@@ -126,14 +126,16 @@ namespace Base58Check
 
     private static byte[] _GetCheckSum(byte[] data)
     {
-      SHA256 sha256 = new SHA256Managed();
-      var hash1 = sha256.ComputeHash(data);
-      var hash2 = sha256.ComputeHash(hash1);
+      using (var sha256 = SHA256.Create())
+      {
+        var hash1 = sha256.ComputeHash(data);
+        var hash2 = sha256.ComputeHash(hash1);
 
-      var result = new byte[CHECK_SUM_SIZE];
-      Buffer.BlockCopy(hash2, 0, result, 0, result.Length);
+        var result = new byte[CHECK_SUM_SIZE];
+        Buffer.BlockCopy(hash2, 0, result, 0, result.Length);
 
-      return result;
+        return result;
+      }     
     }
   }
 }
