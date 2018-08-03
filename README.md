@@ -13,10 +13,10 @@ Want to support development? Consider donating via Bitcoin to `14jumFDmuVkLiAt4T
 
 ## Public Interface
 
-* **`Base58Check.Encode(byte[])`** - Encodes data with a 4-byte checksum
-* **`Base58Check.Decode(string)`** - Decodes data in Base58Check format (with 4 byte checksum)
-* **`Base58Check.EncodePlain(byte[])`** - Encodes data in plain Base58, without any checksum
-* **`Base58Check.DecodePlain(string)`** - Decodes data in plain Base58, without any checksum
+* **`Base58CheckEncoding.Encode(byte[])`** - Encodes data with a 4-byte checksum
+* **`Base58CheckEncoding.Decode(string)`** - Decodes data in Base58Check format (with 4 byte checksum)
+* **`Base58CheckEncoding.EncodePlain(byte[])`** - Encodes data in plain Base58, without any checksum
+* **`Base58CheckEncoding.DecodePlain(string)`** - Decodes data in plain Base58, without any checksum
 
 The `Encode*` methods both expect a byte array of arbitrary length; as the entire payload to encode must be loaded into memory, an `OutOfMemoryException` may be thrown for large payloads. The `Decode*` methods will throw a `FormatException` if the string passed in isn't in a valid Base58 format; the `Decode` method will also throw the `FormatException` if the checksum verification fails.
 
